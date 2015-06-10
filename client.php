@@ -3,8 +3,7 @@
 	require_once("signhost.php");
 	
 	if(isset ($_POST["createNewTransaction"])) {
-		$ondertekenen = new SignHost("https://api-staging.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);
-		//$ondertekenen = new SignHost("https://api.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);		
+		$ondertekenen = new SignHost("https://api.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);		
 	
 		$newTransaction = new Transaction($_FILES["file"]["name"], (bool)$_POST["seal"], $_POST["reference"], $_POST["postbackUrl"], $_POST["sendEmailNotifications"], $_POST["signRequestMode"], $_POST["daysToExpire"]);
 		
@@ -48,7 +47,6 @@
 			<input type="text" name="postbackUrl" value="" /> Postback URL<br />
 			<input type="text" name="signRequestMode" value="2" /> Sign Request Mode<br />
 			<input type="text" name="daysToExpire" value="30" /> Days To Expire<br />
-			<input type="text" name="postbackUrl" value="" /> Postback URL<br />
 			<input type="checkbox" name="sendEmailNotifications" value="1" checked />Send Email Notifications<br /><br />
 			<div class="signerFieldsetContainer">
 				
