@@ -93,6 +93,17 @@ class Transaction
 		$signer->DaysToRemind = $daysToRemind;
 		$this->Signers[] = $signer;
 	}
+	
+	public function AddReceiver($name, $email, $message, $language = null, $receiver = null)
+	{
+		$receiver = new Receiver();
+		$receiver->Name = $name;
+		$receiver->Email = $email;
+		$receiver->Langeuage = $language;
+		$receiver->Message = $message;
+		$receiver->Reference = $reference;
+		$this->Receivers[] = $receiver;
+	}
 }
 
 class File
@@ -116,6 +127,15 @@ class Signer
 	public $Reference;
 	public $ReturnUrl;
 	public $DaysToRemind;
+}
+
+class Receiver
+{
+	public $Name;
+	public $Email;
+	public $Message;
+	public $Language;
+	public $Reference;
 }
 
 class AccessToken

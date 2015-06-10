@@ -11,6 +11,10 @@
 			$newTransaction->AddSigner($signer["email"], $signer["mobile"], (bool)$signer["requireScribble"], (bool)$signer["requireEmailVerification"], (bool)$signer["requireSmsVerification"], (bool)$signer["sendSignRequest"], (bool)$signer["sendSignConfirmation"], $signer["signRequestMessage"], $signer["language"], $signer["scribbleName"], (bool)$signer["scribbleNameFixed"], $signer["reference"], $signer["returnUrl"], $signer["daysToRemind"]);
 		}
 		
+		foreach($_POST["receivers"] as $receiver) {
+			$newTransaction->AddReceiver($receiver["name"], $receiver["email"], $receiver["message"], $receiver["language"], $receiver["reference"]);
+		}
+		
 		$transaction = $ondertekenen->CreateTransaction($newTransaction);
 		$uploadResponse = $ondertekenen->UploadFileContent($transaction->File->Id, $_FILES["file"]["tmp_name"]);
 	}
@@ -52,6 +56,10 @@
 				
 			</div>
 			<p><a href="" class="addSignerLink">Add signer</a></p>
+			<div class="receiverFieldsetContainer">
+				
+			</div>
+			<p><a href="" class="addReceiverLink">Add receiver</a></p>
 			<p>
 				<input type="file" name="file"> <input type="checkbox" name="seal" value="1" checked />Seal
 			</p>
@@ -88,6 +96,25 @@
 		<textarea name="signers[0][signRequestMessage]" rows="4" cols="50">This is a test sign request.</textarea>
 	</fieldset>
 	
+	<fieldset id="receiverFieldset" style="display: none;">
+		<legend>Receiver <span class="receiverNumber">1</span></legend>
+		<input type="text" name="receivers[0][name]" value="" /> Name<br />
+		<input type="text" name="receivers[0][email]" value="" /> E-mail<br />
+		<input type="text" name="receivers[0][reference]" value="" /> Reference<br />
+		<p>
+			Language: <select name="receivers[0][language]">
+				<option value="en-US">English</option>
+				<option value="nl-NL">Nederlands</option>
+				<option value="de-DE">Deutsch</option>
+				<option value="fr-FR">Français</option>
+				<option value="it-IT">Italiano</option>
+				<option value="es-ES">Español</option>
+			</select>
+		</p>
+		Message:<br />
+		<textarea name="receivers[0][message]" rows="4" cols="50">This is a test message.</textarea>
+	</fieldset>
+	
 	<?php 
 		if(isset($newTransaction)) {
 			var_dump($newTransaction);
@@ -111,7 +138,7 @@
 	<script>
 		
 		var signerCounter = 0;
-	
+		var receiverCounter = 0;
 		$(function() {
 			$('.addSignerLink').on('click', function(e) {
 				e.preventDefault();
@@ -127,9 +154,22 @@
 				});
 				
 				fieldset.insertAfter('.signerFieldsetContainer:last').removeAttr('id').show();
+			});
+			
+			$('.addReceiverLink').on('click', function(e) {
+				e.preventDefault();
 				
+				receiverCounter++;
 				
+				var fieldset = $('#receiverFieldset').clone();
 				
+				$('.receiverNumber', fieldset).html(receiverCounter);
+				
+				$('input, textarea', fieldset).attr('name', function(index, attr) {
+					return attr.replace(/\d+/, receiverCounter-1);
+				});
+				
+				fieldset.insertAfter('.receiverFieldsetContainer:last').removeAttr('id').show();
 			});
 		});
 	</script>
