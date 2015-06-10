@@ -9,7 +9,7 @@
 		$newTransaction = new Transaction($_FILES["file"]["name"], (bool)$_POST["seal"], $_POST["reference"], $_POST["postbackUrl"], $_POST["sendEmailNotifications"], $_POST["signRequestMode"], $_POST["daysToExpire"]);
 		
 		foreach($_POST["signers"] as $signer) {
-			$newTransaction->AddSigner($signer["email"], $signer["mobile"], (bool)$signer["requireScribble"], (bool)$signer["requireEmailVerification"], (bool)$signer["requireSmsVerification"], (bool)$signer["sendSignRequest"], $signer["signRequestMessage"], $signer["language"], $signer["scribbleName"], (bool)$signer["scribbleNameFixed"], $signer["reference"], $signer["returnUrl"], $signer["daysToRemind"]);
+			$newTransaction->AddSigner($signer["email"], $signer["mobile"], (bool)$signer["requireScribble"], (bool)$signer["requireEmailVerification"], (bool)$signer["requireSmsVerification"], (bool)$signer["sendSignRequest"], (bool)$signer["sendSignConfirmation"], $signer["signRequestMessage"], $signer["language"], $signer["scribbleName"], (bool)$signer["scribbleNameFixed"], $signer["reference"], $signer["returnUrl"], $signer["daysToRemind"]);
 		}
 		
 		$transaction = $ondertekenen->CreateTransaction($newTransaction);
@@ -75,6 +75,7 @@
 			<input type="checkbox" name="signers[0][requireEmailVerification]" value="1" checked />Require Email Verification<br />
 			<input type="checkbox" name="signers[0][requireSmsVerification]" value="1" />Require Sms Verification<br />
 			<input type="checkbox" name="signers[0][sendSignRequest]" value="1" checked />Send Sign Request<br />
+			<input type="checkbox" name="signers[0][sendSignConfirmation]" value="1" checked />Send Sign Confirmation<br />
 			<input type="checkbox" name="signers[0][scribbleNameFixed]" value="1" />Scribble Name Fixed<br />
 			Language: <select name="signers[0][language]">
 				<option value="en-US">English</option>

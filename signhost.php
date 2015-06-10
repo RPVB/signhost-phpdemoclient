@@ -62,7 +62,6 @@ class Transaction
 	public $SendEmailNotifications;
 	public $SignRequestMode;
 	public $DaysToExpire;
-	public $DaysToRemind;
 	
 	function __construct($fileName, $seal = 1, $reference = null, $postbackUrl = null, $sendEmailNotifications = true, $signRequestMode = 2, $daysToExpire = 30) {
 		$this->File = new File();
@@ -76,7 +75,7 @@ class Transaction
 		$this->DaysToExpire = $daysToExpire;
 	}
 	
-	public function AddSigner($email, $mobile = null, $requireScribble = true, $requireEmailVerification = true, $requireSmsVerification = true, $sendSignRequest = true, $signRequestMessage = null, $language = null, $scribbleName = null, $scribbleNameFixed = true, $reference = null, $returnUrl = null, $daysToRemind = 15) {
+	public function AddSigner($email, $mobile = null, $requireScribble = true, $requireEmailVerification = true, $requireSmsVerification = true, $sendSignRequest = true, $sendSignConfirmation = true, $signRequestMessage = null, $language = null, $scribbleName = null, $scribbleNameFixed = true, $reference = null, $returnUrl = null, $daysToRemind = 15) {
 		$signer = new  Signer();
 		$signer->Email = $email;
 		$signer->Mobile = $mobile;
@@ -84,6 +83,7 @@ class Transaction
 		$signer->RequireEmailVerification = $requireEmailVerification;
 		$signer->RequireSmsVerification = $requireSmsVerification;
 		$signer->SendSignRequest = $sendSignRequest;
+		$signer->SendSignConfirmation = $sendSignConfirmation;
 		$signer->SignRequestMessage = $signRequestMessage;
 		$signer->Language = $language;
 		$signer->ScribbleName = $scribbleName;
@@ -108,12 +108,14 @@ class Signer
 	public $RequireEmailVerification;
 	public $RequireSmsVerification;
 	public $SendSignRequest;
+	public $SendSignConfirmation;
 	public $SignRequestMessage;
 	public $Language;
 	public $ScribbleName;
 	public $ScribbleNameFixed;
 	public $Reference;
 	public $ReturnUrl;
+	public $DaysToRemind;
 }
 
 class AccessToken
