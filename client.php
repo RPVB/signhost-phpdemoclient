@@ -12,10 +12,12 @@
 			$newTransaction->AddSigner($signer["email"], $signer["mobile"], $signer["iban"], (bool)$signer["requireScribble"], (bool)$signer["requireEmailVerification"], (bool)$signer["requireSmsVerification"], (bool)$signer["requireIdealVerification"], (bool)$signer["sendSignRequest"], (bool)$signer["sendSignConfirmation"], $signer["signRequestMessage"], $signer["language"], $signer["scribbleName"], (bool)$signer["scribbleNameFixed"], $signer["reference"], $signer["returnUrl"], $signer["daysToRemind"]);
 		}
 		
-		foreach($_POST["receivers"] as $receiver) {
-			$newTransaction->AddReceiver($receiver["name"], $receiver["email"], $receiver["message"], $receiver["language"], $receiver["reference"]);
+		if (isset($_POST["receivers"])) {
+			foreach($_POST["receivers"] as $receiver) {
+				$newTransaction->AddReceiver($receiver["name"], $receiver["email"], $receiver["message"], $receiver["language"], $receiver["reference"]);
+			}
 		}
-		
+
 		$transaction = $ondertekenen->CreateTransaction($newTransaction);
 		$uploadResponse = $ondertekenen->UploadFileContent($transaction->File->Id, $_FILES["file"]["tmp_name"]);
 	}
@@ -45,9 +47,9 @@
 		
 		<fieldset>
 			<legend>Transaction</legend>
-			<input type="text" name="appName" value="" /> APP Name<br />
-			<input type="text" name="appKey" value="" /> APP Key<br />
-			<input type="text" name="apiKey" value="" /> API Key<br />
+			<input type="text" name="appName" value="<?php echo $_POST["appName"]; ?>" /> APP Name<br />
+			<input type="text" name="appKey" value="<?php echo $_POST["appKey"]; ?>" /> APP Key<br />
+			<input type="text" name="apiKey" value="<?php echo $_POST["apiKey"]; ?>" /> API Key<br />
 			<input type="text" name="reference" value="" /> Reference<br />
 			<input type="text" name="postbackUrl" value="" /> Postback URL<br />
 			<input type="text" name="signRequestMode" value="2" /> Sign Request Mode<br />
@@ -118,6 +120,7 @@
 		<textarea name="receivers[0][message]" rows="4" cols="50">This is a test message.</textarea>
 	</fieldset>
 	
+	<pre>
 	<?php 
 		if(isset($newTransaction)) {
 			var_dump($newTransaction);
@@ -135,6 +138,7 @@
 			var_dump($uploadResponse);
 		}
 	?>
+	</pre>
 	
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
