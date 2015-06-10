@@ -3,12 +3,13 @@
 	require_once("signhost.php");
 	
 	if(isset ($_POST["createNewTransaction"])) {
-		$ondertekenen = new SignHost("https://api.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);		
+		$ondertekenen = new SignHost("https://api-staging.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);
+		//$ondertekenen = new SignHost("https://api.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);		
 	
 		$newTransaction = new Transaction($_FILES["file"]["name"], (bool)$_POST["seal"], $_POST["reference"], $_POST["postbackUrl"], $_POST["sendEmailNotifications"], $_POST["signRequestMode"], $_POST["daysToExpire"]);
 		
 		foreach($_POST["signers"] as $signer) {
-			$newTransaction->AddSigner($signer["email"], $signer["mobile"], (bool)$signer["requireScribble"], (bool)$signer["requireEmailVerification"], (bool)$signer["requireSmsVerification"], (bool)$signer["sendSignRequest"], (bool)$signer["sendSignConfirmation"], $signer["signRequestMessage"], $signer["language"], $signer["scribbleName"], (bool)$signer["scribbleNameFixed"], $signer["reference"], $signer["returnUrl"], $signer["daysToRemind"]);
+			$newTransaction->AddSigner($signer["email"], $signer["mobile"], $signer["iban"], (bool)$signer["requireScribble"], (bool)$signer["requireEmailVerification"], (bool)$signer["requireSmsVerification"], (bool)$signer["requireIdealVerification"], (bool)$signer["sendSignRequest"], (bool)$signer["sendSignConfirmation"], $signer["signRequestMessage"], $signer["language"], $signer["scribbleName"], (bool)$signer["scribbleNameFixed"], $signer["reference"], $signer["returnUrl"], $signer["daysToRemind"]);
 		}
 		
 		foreach($_POST["receivers"] as $receiver) {
@@ -72,6 +73,7 @@
 		<legend>Signer <span class="signerNumber">1</span></legend>
 		<input type="text" name="signers[0][email]" value="" /> Email Receiver<br />
 		<input type="text" name="signers[0][mobile]" value="" /> Mobile Receiver<br />
+		<input type="text" name="signers[0][iban]" value="" /> Iban Receiver<br />
 		<input type="text" name="signers[0][reference]" value="" /> Reference<br />
 		<input type="text" name="signers[0][returnUrl]" value="http://ondertekenen.nl" /> Return URL<br />
 		<input type="text" name="signers[0][scribbleName]" value="" /> Scribble Name<br />
@@ -80,6 +82,7 @@
 			<input type="checkbox" name="signers[0][requireScribble]" value="1" />Require Scribble<br />
 			<input type="checkbox" name="signers[0][requireEmailVerification]" value="1" checked />Require Email Verification<br />
 			<input type="checkbox" name="signers[0][requireSmsVerification]" value="1" />Require Sms Verification<br />
+			<input type="checkbox" name="signers[0][requireIdealVerification]" value="1" />Require Ideal Verification<br />
 			<input type="checkbox" name="signers[0][sendSignRequest]" value="1" checked />Send Sign Request<br />
 			<input type="checkbox" name="signers[0][sendSignConfirmation]" value="1" checked />Send Sign Confirmation<br />
 			<input type="checkbox" name="signers[0][scribbleNameFixed]" value="1" />Scribble Name Fixed<br />

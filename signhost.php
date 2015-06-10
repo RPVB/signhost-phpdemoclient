@@ -75,13 +75,15 @@ class Transaction
 		$this->DaysToExpire = $daysToExpire;
 	}
 	
-	public function AddSigner($email, $mobile = null, $requireScribble = true, $requireEmailVerification = true, $requireSmsVerification = true, $sendSignRequest = true, $sendSignConfirmation = true, $signRequestMessage = null, $language = null, $scribbleName = null, $scribbleNameFixed = true, $reference = null, $returnUrl = null, $daysToRemind = 15) {
+	public function AddSigner($email, $mobile = null, $iban = null, $requireScribble = true, $requireEmailVerification = true, $requireSmsVerification = true, $requireIdealVerification = true, $sendSignRequest = true, $sendSignConfirmation = true, $signRequestMessage = null, $language = null, $scribbleName = null, $scribbleNameFixed = true, $reference = null, $returnUrl = null, $daysToRemind = 15) {
 		$signer = new  Signer();
 		$signer->Email = $email;
 		$signer->Mobile = $mobile;
+		$signer->Iban = $iban;
 		$signer->RequireScribble = $requireScribble;
 		$signer->RequireEmailVerification = $requireEmailVerification;
 		$signer->RequireSmsVerification = $requireSmsVerification;
+		$signer->RequireIdealVerification = $requireIdealVerification;
 		$signer->SendSignRequest = $sendSignRequest;
 		$signer->SendSignConfirmation = $sendSignConfirmation;
 		$signer->SignRequestMessage = $signRequestMessage;
@@ -115,9 +117,11 @@ class Signer
 {
 	public $Email;
 	public $Mobile;
+	public $Iban;
 	public $RequireScribble;
 	public $RequireEmailVerification;
 	public $RequireSmsVerification;
+	public $RequireIdealVerification;
 	public $SendSignRequest;
 	public $SendSignConfirmation;
 	public $SignRequestMessage;
