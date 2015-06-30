@@ -42,7 +42,9 @@ class SignHost
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
+
 		$response = curl_exec($ch);
+
 		fclose($fh);
 		return $response;
 	}
@@ -63,7 +65,15 @@ class Transaction
 	public $SignRequestMode;
 	public $DaysToExpire;
 	
-	function __construct($fileName, $seal = 1, $reference = null, $postbackUrl = null, $sendEmailNotifications = true, $signRequestMode = 2, $daysToExpire = 30) {
+	function __construct(
+			$fileName,
+			$seal = 1,
+			$reference = null,
+			$postbackUrl = null,
+			$sendEmailNotifications = true,
+			$signRequestMode = 2,
+			$daysToExpire = 30)
+	{
 		$this->File = new File();
 		$this->File->Name = $fileName;
 		$this->Seal = $seal;
@@ -75,12 +85,31 @@ class Transaction
 		$this->DaysToExpire = $daysToExpire;
 	}
 	
-	public function AddSigner($email, $mobile = null, $iban = null, $requireScribble = true, $requireEmailVerification = true, $requireSmsVerification = true, $requireIdealVerification = true, $sendSignRequest = true, $sendSignConfirmation = true, $signRequestMessage = null, $language = null, $scribbleName = null, $scribbleNameFixed = true, $reference = null, $returnUrl = null, $daysToRemind = 15) {
+	public function AddSigner(
+			$email,
+			$mobile = null,
+			$iban = null,
+			$requireScribble = true,
+			$requireScribbleName = false, // If a scribble is not required, do we at least need the signers name?
+			$requireEmailVerification = true,
+			$requireSmsVerification = true,
+			$requireIdealVerification = true,
+			$sendSignRequest = true,
+			$sendSignConfirmation = true,
+			$signRequestMessage = null,
+			$language = null,
+			$scribbleName = null,
+			$scribbleNameFixed = true,
+			$reference = null,
+			$returnUrl = null,
+			$daysToRemind = 15)
+	{
 		$signer = new  Signer();
 		$signer->Email = $email;
 		$signer->Mobile = $mobile;
 		$signer->Iban = $iban;
 		$signer->RequireScribble = $requireScribble;
+		$signer->RequireScribbleName = $requireScribbleName;
 		$signer->RequireEmailVerification = $requireEmailVerification;
 		$signer->RequireSmsVerification = $requireSmsVerification;
 		$signer->RequireIdealVerification = $requireIdealVerification;
@@ -96,7 +125,12 @@ class Transaction
 		$this->Signers[] = $signer;
 	}
 	
-	public function AddReceiver($name, $email, $message, $language = null, $receiver = null)
+	public function AddReceiver(
+			$name,
+			$email,
+			$message,
+			$language = null,
+			$receiver = null)
 	{
 		$receiver = new Receiver();
 		$receiver->Name = $name;
@@ -119,6 +153,7 @@ class Signer
 	public $Mobile;
 	public $Iban;
 	public $RequireScribble;
+	public $RequireScribbleName;
 	public $RequireEmailVerification;
 	public $RequireSmsVerification;
 	public $RequireIdealVerification;

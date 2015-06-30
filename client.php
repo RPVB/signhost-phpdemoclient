@@ -9,12 +9,34 @@
 		$newTransaction = new Transaction($_FILES["file"]["name"], (bool)$_POST["seal"], $_POST["reference"], $_POST["postbackUrl"], $_POST["sendEmailNotifications"], $_POST["signRequestMode"], $_POST["daysToExpire"]);
 		
 		foreach($_POST["signers"] as $signer) {
-			$newTransaction->AddSigner($signer["email"], $signer["mobile"], $signer["iban"], (bool)$signer["requireScribble"], (bool)$signer["requireEmailVerification"], (bool)$signer["requireSmsVerification"], (bool)$signer["requireIdealVerification"], (bool)$signer["sendSignRequest"], (bool)$signer["sendSignConfirmation"], $signer["signRequestMessage"], $signer["language"], $signer["scribbleName"], (bool)$signer["scribbleNameFixed"], $signer["reference"], $signer["returnUrl"], $signer["daysToRemind"]);
+			$newTransaction->AddSigner(
+				$signer["email"],
+				$signer["mobile"],
+				$signer["iban"], 
+				(bool)$signer["requireScribble"],
+				(bool)$signer["requireScribbleName"],
+				(bool)$signer["requireEmailVerification"], 
+				(bool)$signer["requireSmsVerification"],
+				(bool)$signer["requireIdealVerification"],
+				(bool)$signer["sendSignRequest"],
+				(bool)$signer["sendSignConfirmation"],
+				$signer["signRequestMessage"],
+				$signer["language"],
+				$signer["scribbleName"],
+				(bool)$signer["scribbleNameFixed"],
+				$signer["reference"],
+				$signer["returnUrl"],
+				$signer["daysToRemind"]);
 		}
 		
 		if (isset($_POST["receivers"])) {
 			foreach($_POST["receivers"] as $receiver) {
-				$newTransaction->AddReceiver($receiver["name"], $receiver["email"], $receiver["message"], $receiver["language"], $receiver["reference"]);
+				$newTransaction->AddReceiver(
+					$receiver["name"],
+					$receiver["email"],
+					$receiver["message"],
+					$receiver["language"],
+					$receiver["reference"]);
 			}
 		}
 
@@ -81,7 +103,8 @@
 		<input type="text" name="signers[0][scribbleName]" value="" /> Scribble Name<br />
 		<input type="text" name="signers[0][daysToRemind]" value="15" /> Days To Remind<br />
 		<p>
-			<input type="checkbox" name="signers[0][requireScribble]" value="1" />Require Scribble<br />
+			<input type="checkbox" name="signers[0][requireScribble]" value="1" checked />Require Scribble<br />
+			<input type="checkbox" name="signers[0][requireScribbleName]" value="1">Require scribble name (if Require scribble is not set)<br/>
 			<input type="checkbox" name="signers[0][requireEmailVerification]" value="1" checked />Require Email Verification<br />
 			<input type="checkbox" name="signers[0][requireSmsVerification]" value="1" />Require Sms Verification<br />
 			<input type="checkbox" name="signers[0][requireIdealVerification]" value="1" />Require Ideal Verification<br />
