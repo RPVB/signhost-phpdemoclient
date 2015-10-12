@@ -3,8 +3,7 @@
 	require_once("signhost.php");
 	
 	if(isset ($_POST["createNewTransaction"])) {
-		$ondertekenen = new SignHost("https://api-staging.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);
-		//$ondertekenen = new SignHost("https://api.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);		
+		$ondertekenen = new SignHost("https://api.signhost.com", $_POST["appName"], $_POST["appKey"], $_POST["apiKey"]);		
 	
 		$newTransaction = new Transaction($_FILES["file"]["name"], (bool)$_POST["seal"], $_POST["reference"], $_POST["postbackUrl"], $_POST["sendEmailNotifications"], $_POST["signRequestMode"], $_POST["daysToExpire"]);
 		
