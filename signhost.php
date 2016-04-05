@@ -130,12 +130,12 @@ class Transaction
 			$email,
 			$message,
 			$language = null,
-			$receiver = null)
+			$reference = null)
 	{
 		$receiver = new Receiver();
 		$receiver->Name = $name;
 		$receiver->Email = $email;
-		$receiver->Langeuage = $language;
+		$receiver->Language = $language;
 		$receiver->Message = $message;
 		$receiver->Reference = $reference;
 		$this->Receivers[] = $receiver;
