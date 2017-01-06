@@ -1,0 +1,8 @@
+{
+  "name": "Evidos/SignHostAPIClientRest",
+  "autoload": {
+    "psr-4": {
+      "Evidos\\SignHostAPIClientRest\\": "src/"
+    }
+  }
+}
