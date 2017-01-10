@@ -53,6 +53,23 @@ class SignHost
         return $response;
     }
 
+    public function checkTransactionStatus($transactionId, &$statusCode)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->ApiUrl. "/api/transaction/". $transactionId);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Application: APPKey ". $this->AppName. " ". $this->AppKey, "Authorization: APIKey ". $this->ApiKey));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
+
+        $response = curl_exec($ch);
+
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        return json_decode($response);
+    }
+
 	public function ValidateChecksum($masterTransactionId, $fileId, $status, $checksum) {
 		return sha1($masterTransactionId. "|". $fileId. "|". $status. "|". $this->SharedSecret) == $checksum;
 	}
