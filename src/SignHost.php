@@ -32,7 +32,7 @@ class SignHost
 		return json_decode($responseJson);
 	}
 
-    public function UploadFileContent($fileId, $filePath, &$statusCode) {
+    public function UploadFileContent($fileId, $filePath) {
         $fh = fopen($filePath, 'r');
         $ch = curl_init($this->ApiUrl. "/api/file/". $fileId);
         curl_setopt($ch, CURLOPT_PUT, 1);
@@ -44,16 +44,15 @@ class SignHost
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
-
-        $response = curl_exec($ch);
+        curl_exec($ch);
 
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         fclose($fh);
-        return $response;
+        return $statusCode;
     }
 
-    public function checkTransactionStatus($transactionId, &$statusCode)
+    public function checkTransactionStatus($transactionId)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->ApiUrl. "/api/transaction/". $transactionId);
@@ -64,8 +63,6 @@ class SignHost
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
 
         $response = curl_exec($ch);
-
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         return json_decode($response);
     }
